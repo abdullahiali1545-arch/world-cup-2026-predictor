@@ -1,4 +1,4 @@
-from src.elo import expected_score, update_ratings, compute_ratings
+from src.elo import expected_score, update_ratings, compute_ratings, predict_match
 import pandas as pd
 
 
@@ -62,3 +62,30 @@ def test_unplayed_fixtures_are_ignored():
     })
     ratings = compute_ratings(matches)
     assert ratings == {}
+
+def test_predict_match_probabilities_sum_to_one():
+    probs = predict_match(1600, 1500)
+    total = probs["win"] + probs["draw"] + probs["loss"]
+    assert abs(total - 1.0) < 0.0001
+
+
+def test_all_probabilities_are_valid():
+    probs = predict_match(1600, 1500)
+    for outcome in ("win", "draw", "loss"):
+        assert 0 <= probs[outcome] <= 1
+
+
+def test_stronger_team_more_likely_to_win():
+    probs = predict_match(1800, 1400)
+    assert probs["win"] > probs["loss"]
+
+
+def test_draw_is_largest_when_evenly_matched():
+    even = predict_match(1500, 1500)
+    mismatch = predict_match(1900, 1300)
+    assert even["draw"] > mismatch["draw"]
+
+def test_even_match_draw_is_reasonable():
+    """For two equal teams, the draw probability should sit near the real-world rate."""
+    probs = predict_match(1500, 1500)
+    assert 0.24 < probs["draw"] < 0.31

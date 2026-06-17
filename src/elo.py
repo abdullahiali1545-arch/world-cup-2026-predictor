@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 def expected_score(rating_a, rating_b):
     """Probability that team A beats team B, based on their Elo ratings."""
@@ -56,3 +57,22 @@ def compute_ratings(matches, k=30, base_rating=1500):
 
     return ratings
 
+def predict_match(rating_a, rating_b, base_draw=0.275, spread=200000.0):
+    """
+    Turn two teams' Elo ratings into win/draw/loss probabilities for team A.
+
+    Returns a dictionary: {"win": ..., "draw": ..., "loss": ...}, summing to 1.
+    """
+    # 1. Draw probability: a bell curve, highest when ratings are equal.
+    gap = rating_a - rating_b
+    draw = base_draw * np.exp(-(gap ** 2) / spread)
+
+    # 2. Split the remaining probability between win and loss
+    #    using the existing Elo expected score.
+    remaining = 1 - draw
+    win_share = expected_score(rating_a, rating_b)
+
+    win = remaining * win_share
+    loss = remaining * (1 - win_share)
+
+    return {"win": win, "draw": draw, "loss": loss}
