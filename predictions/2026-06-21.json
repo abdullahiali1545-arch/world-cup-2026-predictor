@@ -1,0 +1,43 @@
+{
+  "match_date": "2026-06-21",
+  "generated_at_utc": "2026-06-17T13:45:20.092717+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Spain",
+      "away_team": "Saudi Arabia",
+      "home_rating": 2033,
+      "away_rating": 1669,
+      "prob_home_win": 0.764,
+      "prob_draw": 0.142,
+      "prob_away_win": 0.094
+    },
+    {
+      "home_team": "Belgium",
+      "away_team": "Iran",
+      "home_rating": 1877,
+      "away_rating": 1817,
+      "prob_home_win": 0.428,
+      "prob_draw": 0.27,
+      "prob_away_win": 0.302
+    },
+    {
+      "home_team": "Uruguay",
+      "away_team": "Cape Verde",
+      "home_rating": 1845,
+      "away_rating": 1626,
+      "prob_home_win": 0.61,
+      "prob_draw": 0.217,
+      "prob_away_win": 0.173
+    },
+    {
+      "home_team": "New Zealand",
+      "away_team": "Egypt",
+      "home_rating": 1632,
+      "away_rating": 1757,
+      "prob_home_win": 0.244,
+      "prob_draw": 0.254,
+      "prob_away_win": 0.502
+    }
+  ]
+}
