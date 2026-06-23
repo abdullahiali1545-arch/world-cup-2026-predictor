@@ -1,21 +1,4 @@
-colorama @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/colorama_1729036581634/work
-iniconfig @ file:///C:/Users/task_176735683625021/croot/iniconfig_1767356939856/work
-joblib @ file:///C:/Users/task_176786735513374/croot/joblib_1767868143118/work
-mkl-service==2.5.2
-mkl_fft @ file:///C:/Users/task_177730052164139/croot/mkl_fft_1777300596437/work
-mkl_random @ file:///C:/miniconda3/conda-bld/mkl_random_1761593076691/work
-narwhals @ file:///C:/miniconda3/conda-bld/narwhals_1760003513313/work
-numpy @ file:///C:/Users/task_178034512337004/croot/numpy_and_numpy_base_1780345816639/work/dist/numpy-2.4.6-cp313-cp313-win_amd64.whl#sha256=eaf14a93380e1264e6570a4a7f0b78e41f7da5b5a52869d112049e03b06e5dde
-packaging==26.0
-pandas @ file:///C:/Users/task_178007177030873/croot/pandas_1780071914626/work
-pluggy @ file:///C:/Users/task_177697291181239/croot/pluggy_1776973044854/work
-Pygments @ file:///C:/Users/task_177512670754876/croot/pygments_1775127039781/work
-pytest @ file:///C:/Users/task_177765425171783/croot/pytest_1777654778843/work
-python-dateutil @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/python-dateutil_1729038406576/work
-scikit-learn @ file:///C:/Users/task_178153018637275/croot/scikit-learn_1781530291363/work
-scipy @ file:///C:/Users/task_177627760127473/croot/scipy_1776277711548/work/dist/scipy-1.17.1-cp313-cp313-win_amd64.whl#sha256=d056816a7bc9365f3a47d8c02bf45bf0a1637bf582fbecf1d10c59cd1eb098f9
-setuptools==82.0.1
-six @ file:///C:/b/abs_149wuyuo1o/croot/six_1744271521515/work
-threadpoolctl @ file:///C:/miniconda3/conda-bld/threadpoolctl_1764361788000/work
-tzdata @ file:///home/task_177806041933677/croot/python-tzdata_1778060738968/work
-wheel==0.46.3
+numpy>=1.26
+pandas>=2.0
+scikit-learn>=1.3
+pytest>=7.0
