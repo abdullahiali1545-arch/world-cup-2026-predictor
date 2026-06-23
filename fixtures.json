@@ -1,0 +1,139 @@
+{
+  "fixtures": [
+    {
+      "date": "2026-06-23",
+      "home_team": "England",
+      "away_team": "Ghana"
+    },
+    {
+      "date": "2026-06-23",
+      "home_team": "Panama",
+      "away_team": "Croatia"
+    },
+    {
+      "date": "2026-06-23",
+      "home_team": "Colombia",
+      "away_team": "DR Congo"
+    },
+    {
+      "date": "2026-06-24",
+      "home_team": "Czech Republic",
+      "away_team": "Mexico"
+    },
+    {
+      "date": "2026-06-24",
+      "home_team": "South Africa",
+      "away_team": "South Korea"
+    },
+    {
+      "date": "2026-06-24",
+      "home_team": "Switzerland",
+      "away_team": "Canada"
+    },
+    {
+      "date": "2026-06-24",
+      "home_team": "Bosnia and Herzegovina",
+      "away_team": "Qatar"
+    },
+    {
+      "date": "2026-06-24",
+      "home_team": "Scotland",
+      "away_team": "Brazil"
+    },
+    {
+      "date": "2026-06-24",
+      "home_team": "Morocco",
+      "away_team": "Haiti"
+    },
+    {
+      "date": "2026-06-25",
+      "home_team": "Turkey",
+      "away_team": "United States"
+    },
+    {
+      "date": "2026-06-25",
+      "home_team": "Paraguay",
+      "away_team": "Australia"
+    },
+    {
+      "date": "2026-06-25",
+      "home_team": "Germany",
+      "away_team": "Ecuador"
+    },
+    {
+      "date": "2026-06-25",
+      "home_team": "Curaçao",
+      "away_team": "Ivory Coast"
+    },
+    {
+      "date": "2026-06-25",
+      "home_team": "Japan",
+      "away_team": "Sweden"
+    },
+    {
+      "date": "2026-06-25",
+      "home_team": "Tunisia",
+      "away_team": "Netherlands"
+    },
+    {
+      "date": "2026-06-26",
+      "home_team": "Egypt",
+      "away_team": "Iran"
+    },
+    {
+      "date": "2026-06-26",
+      "home_team": "New Zealand",
+      "away_team": "Belgium"
+    },
+    {
+      "date": "2026-06-26",
+      "home_team": "Norway",
+      "away_team": "France"
+    },
+    {
+      "date": "2026-06-26",
+      "home_team": "Senegal",
+      "away_team": "Iraq"
+    },
+    {
+      "date": "2026-06-26",
+      "home_team": "Cape Verde",
+      "away_team": "Saudi Arabia"
+    },
+    {
+      "date": "2026-06-26",
+      "home_team": "Uruguay",
+      "away_team": "Spain"
+    },
+    {
+      "date": "2026-06-27",
+      "home_team": "Jordan",
+      "away_team": "Argentina"
+    },
+    {
+      "date": "2026-06-27",
+      "home_team": "Algeria",
+      "away_team": "Austria"
+    },
+    {
+      "date": "2026-06-27",
+      "home_team": "Colombia",
+      "away_team": "Portugal"
+    },
+    {
+      "date": "2026-06-27",
+      "home_team": "DR Congo",
+      "away_team": "Uzbekistan"
+    },
+    {
+      "date": "2026-06-27",
+      "home_team": "Panama",
+      "away_team": "England"
+    },
+    {
+      "date": "2026-06-27",
+      "home_team": "Croatia",
+      "away_team": "Ghana"
+    }
+  ]
+}
