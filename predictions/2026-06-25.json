@@ -1,0 +1,61 @@
+{
+  "match_date": "2026-06-25",
+  "generated_at_utc": "2026-06-25T10:39:58.776986+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Turkey",
+      "away_team": "United States",
+      "home_rating": 1847,
+      "away_rating": 1825,
+      "prob_home_win": 0.386,
+      "prob_draw": 0.274,
+      "prob_away_win": 0.34
+    },
+    {
+      "home_team": "Paraguay",
+      "away_team": "Australia",
+      "home_rating": 1777,
+      "away_rating": 1815,
+      "prob_home_win": 0.324,
+      "prob_draw": 0.273,
+      "prob_away_win": 0.403
+    },
+    {
+      "home_team": "Germany",
+      "away_team": "Ecuador",
+      "home_rating": 1946,
+      "away_rating": 1871,
+      "prob_home_win": 0.444,
+      "prob_draw": 0.267,
+      "prob_away_win": 0.288
+    },
+    {
+      "home_team": "Cura\u00e7ao",
+      "away_team": "Ivory Coast",
+      "home_rating": 1515,
+      "away_rating": 1785,
+      "prob_home_win": 0.141,
+      "prob_draw": 0.191,
+      "prob_away_win": 0.668
+    },
+    {
+      "home_team": "Japan",
+      "away_team": "Sweden",
+      "home_rating": 1912,
+      "away_rating": 1758,
+      "prob_home_win": 0.535,
+      "prob_draw": 0.244,
+      "prob_away_win": 0.221
+    },
+    {
+      "home_team": "Tunisia",
+      "away_team": "Netherlands",
+      "home_rating": 1670,
+      "away_rating": 1917,
+      "prob_home_win": 0.155,
+      "prob_draw": 0.203,
+      "prob_away_win": 0.642
+    }
+  ]
+}
