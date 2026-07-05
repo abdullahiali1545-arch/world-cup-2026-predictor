@@ -1,0 +1,25 @@
+{
+  "match_date": "2026-07-05",
+  "generated_at_utc": "2026-07-05T09:00:59.722317+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Brazil",
+      "away_team": "Norway",
+      "home_rating": 1946,
+      "away_rating": 1848,
+      "prob_home_win": 0.471,
+      "prob_draw": 0.262,
+      "prob_away_win": 0.267
+    },
+    {
+      "home_team": "Mexico",
+      "away_team": "England",
+      "home_rating": 1881,
+      "away_rating": 1944,
+      "prob_home_win": 0.3,
+      "prob_draw": 0.27,
+      "prob_away_win": 0.431
+    }
+  ]
+}
