@@ -1,0 +1,61 @@
+{
+  "match_date": "2026-06-27",
+  "generated_at_utc": "2026-06-27T10:06:09.471855+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Jordan",
+      "away_team": "Argentina",
+      "home_rating": 1668,
+      "away_rating": 2054,
+      "prob_home_win": 0.085,
+      "prob_draw": 0.131,
+      "prob_away_win": 0.784
+    },
+    {
+      "home_team": "Algeria",
+      "away_team": "Austria",
+      "home_rating": 1821,
+      "away_rating": 1847,
+      "prob_home_win": 0.336,
+      "prob_draw": 0.274,
+      "prob_away_win": 0.39
+    },
+    {
+      "home_team": "Colombia",
+      "away_team": "Portugal",
+      "home_rating": 1930,
+      "away_rating": 1954,
+      "prob_home_win": 0.338,
+      "prob_draw": 0.274,
+      "prob_away_win": 0.388
+    },
+    {
+      "home_team": "DR Congo",
+      "away_team": "Uzbekistan",
+      "home_rating": 1671,
+      "away_rating": 1748,
+      "prob_home_win": 0.287,
+      "prob_draw": 0.267,
+      "prob_away_win": 0.446
+    },
+    {
+      "home_team": "Panama",
+      "away_team": "England",
+      "home_rating": 1724,
+      "away_rating": 1944,
+      "prob_home_win": 0.173,
+      "prob_draw": 0.216,
+      "prob_away_win": 0.611
+    },
+    {
+      "home_team": "Croatia",
+      "away_team": "Ghana",
+      "home_rating": 1886,
+      "away_rating": 1568,
+      "prob_home_win": 0.719,
+      "prob_draw": 0.166,
+      "prob_away_win": 0.115
+    }
+  ]
+}

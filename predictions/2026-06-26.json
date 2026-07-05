@@ -1,0 +1,61 @@
+{
+  "match_date": "2026-06-26",
+  "generated_at_utc": "2026-06-26T10:49:38.839391+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Egypt",
+      "away_team": "Iran",
+      "home_rating": 1757,
+      "away_rating": 1817,
+      "prob_home_win": 0.303,
+      "prob_draw": 0.27,
+      "prob_away_win": 0.427
+    },
+    {
+      "home_team": "New Zealand",
+      "away_team": "Belgium",
+      "home_rating": 1632,
+      "away_rating": 1877,
+      "prob_home_win": 0.156,
+      "prob_draw": 0.204,
+      "prob_away_win": 0.64
+    },
+    {
+      "home_team": "Norway",
+      "away_team": "France",
+      "home_rating": 1848,
+      "away_rating": 1996,
+      "prob_home_win": 0.225,
+      "prob_draw": 0.246,
+      "prob_away_win": 0.528
+    },
+    {
+      "home_team": "Senegal",
+      "away_team": "Iraq",
+      "home_rating": 1807,
+      "away_rating": 1691,
+      "prob_home_win": 0.492,
+      "prob_draw": 0.257,
+      "prob_away_win": 0.251
+    },
+    {
+      "home_team": "Cape Verde",
+      "away_team": "Saudi Arabia",
+      "home_rating": 1626,
+      "away_rating": 1669,
+      "prob_home_win": 0.32,
+      "prob_draw": 0.273,
+      "prob_away_win": 0.408
+    },
+    {
+      "home_team": "Uruguay",
+      "away_team": "Spain",
+      "home_rating": 1845,
+      "away_rating": 2033,
+      "prob_home_win": 0.195,
+      "prob_draw": 0.231,
+      "prob_away_win": 0.574
+    }
+  ]
+}

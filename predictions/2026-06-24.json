@@ -1,0 +1,61 @@
+{
+  "match_date": "2026-06-24",
+  "generated_at_utc": "2026-06-24T10:47:03.632273+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Czech Republic",
+      "away_team": "Mexico",
+      "home_rating": 1755,
+      "away_rating": 1881,
+      "prob_home_win": 0.243,
+      "prob_draw": 0.254,
+      "prob_away_win": 0.503
+    },
+    {
+      "home_team": "South Africa",
+      "away_team": "South Korea",
+      "home_rating": 1633,
+      "away_rating": 1835,
+      "prob_home_win": 0.185,
+      "prob_draw": 0.224,
+      "prob_away_win": 0.591
+    },
+    {
+      "home_team": "Switzerland",
+      "away_team": "Canada",
+      "home_rating": 1839,
+      "away_rating": 1806,
+      "prob_home_win": 0.397,
+      "prob_draw": 0.274,
+      "prob_away_win": 0.33
+    },
+    {
+      "home_team": "Bosnia and Herzegovina",
+      "away_team": "Qatar",
+      "home_rating": 1636,
+      "away_rating": 1590,
+      "prob_home_win": 0.412,
+      "prob_draw": 0.272,
+      "prob_away_win": 0.316
+    },
+    {
+      "home_team": "Scotland",
+      "away_team": "Brazil",
+      "home_rating": 1758,
+      "away_rating": 1946,
+      "prob_home_win": 0.194,
+      "prob_draw": 0.23,
+      "prob_away_win": 0.576
+    },
+    {
+      "home_team": "Morocco",
+      "away_team": "Haiti",
+      "home_rating": 1908,
+      "away_rating": 1592,
+      "prob_home_win": 0.717,
+      "prob_draw": 0.167,
+      "prob_away_win": 0.116
+    }
+  ]
+}
