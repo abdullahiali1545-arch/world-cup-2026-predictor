@@ -1,0 +1,25 @@
+{
+  "match_date": "2026-07-07",
+  "generated_at_utc": "2026-07-07T10:53:39.204551+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Egypt",
+      "away_team": "Argentina",
+      "home_rating": 1757,
+      "away_rating": 2054,
+      "prob_home_win": 0.126,
+      "prob_draw": 0.177,
+      "prob_away_win": 0.696
+    },
+    {
+      "home_team": "Switzerland",
+      "away_team": "Colombia",
+      "home_rating": 1839,
+      "away_rating": 1930,
+      "prob_home_win": 0.273,
+      "prob_draw": 0.264,
+      "prob_away_win": 0.463
+    }
+  ]
+}
