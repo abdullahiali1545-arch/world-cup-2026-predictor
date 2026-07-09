@@ -2,15 +2,14 @@ import json
 
 fixtures = {
     "fixtures": [
-        {"date": "2026-07-05", "home_team": "Brazil", "away_team": "Norway"},
-        {"date": "2026-07-05", "home_team": "Mexico", "away_team": "England"},
-        {"date": "2026-07-06", "home_team": "Spain", "away_team": "Portugal"},
-        {"date": "2026-07-06", "home_team": "Belgium", "away_team": "United States"},
-        {"date": "2026-07-07", "home_team": "Egypt", "away_team": "Argentina"},
-        {"date": "2026-07-07", "home_team": "Switzerland", "away_team": "Colombia"},
+        {"date": "2026-07-09", "home_team": "France",    "away_team": "Morocco"},
+        {"date": "2026-07-10", "home_team": "Spain",     "away_team": "Belgium"},
+        {"date": "2026-07-11", "home_team": "Norway",    "away_team": "England"},
+        {"date": "2026-07-11", "home_team": "Argentina", "away_team": "Switzerland"},
     ]
 }
 
 with open("fixtures.json", "w", encoding="utf-8") as f:
     json.dump(fixtures, f, indent=2, ensure_ascii=False)
-print("Wrote fixtures.json")
+
+print("Wrote fixtures.json with", len(fixtures["fixtures"]), "fixtures")
