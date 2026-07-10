@@ -1,0 +1,16 @@
+{
+  "match_date": "2026-07-10",
+  "generated_at_utc": "2026-07-10T10:51:04.490682+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Spain",
+      "away_team": "Belgium",
+      "home_rating": 2033,
+      "away_rating": 1877,
+      "prob_home_win": 0.537,
+      "prob_draw": 0.244,
+      "prob_away_win": 0.22
+    }
+  ]
+}
