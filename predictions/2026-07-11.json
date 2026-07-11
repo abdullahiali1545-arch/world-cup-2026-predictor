@@ -1,0 +1,25 @@
+{
+  "match_date": "2026-07-11",
+  "generated_at_utc": "2026-07-11T09:26:45.804717+00:00",
+  "model": "elo-baseline-v1",
+  "predictions": [
+    {
+      "home_team": "Norway",
+      "away_team": "England",
+      "home_rating": 1848,
+      "away_rating": 1944,
+      "prob_home_win": 0.269,
+      "prob_draw": 0.263,
+      "prob_away_win": 0.468
+    },
+    {
+      "home_team": "Argentina",
+      "away_team": "Switzerland",
+      "home_rating": 2054,
+      "away_rating": 1839,
+      "prob_home_win": 0.606,
+      "prob_draw": 0.218,
+      "prob_away_win": 0.176
+    }
+  ]
+}
