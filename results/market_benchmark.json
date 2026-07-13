@@ -1,0 +1,45 @@
+{
+  "note": "Probabilities ordered [home, draw, away]. Odds: FanDuel 90-min money line, 12 Jul 2026.",
+  "fixtures": [
+    {
+      "home_team": "France",
+      "away_team": "Spain",
+      "market": [
+        0.4051,
+        0.2975,
+        0.2975
+      ],
+      "model": [
+        0.3532,
+        0.252,
+        0.3947
+      ],
+      "baseline": [
+        0.3252,
+        0.2732,
+        0.4017
+      ],
+      "bookmaker_margin": 0.0505
+    },
+    {
+      "home_team": "England",
+      "away_team": "Argentina",
+      "market": [
+        0.3656,
+        0.3278,
+        0.3066
+      ],
+      "model": [
+        0.2481,
+        0.2426,
+        0.5093
+      ],
+      "baseline": [
+        0.2574,
+        0.259,
+        0.4836
+      ],
+      "bookmaker_margin": 0.052
+    }
+  ]
+}
