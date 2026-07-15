@@ -13,6 +13,8 @@ To clarify beforehand this project is not trying to beat the bookmakers.
 What I wanted to test is whether the probabilities are honest. If the model
 says 60%, that outcome should happen roughly 60% of the time.
 
+Pick any two national teams on the live app and it predicts the match with both the trained model and the Elo baseline, side by side.
+
 ## Results
 
 Both models were trained on matches before 2022, then scored on the 4,588
