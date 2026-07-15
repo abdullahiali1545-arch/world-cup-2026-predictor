@@ -1,7 +1,7 @@
 """Streamlit app: World Cup 2026 match predictor.
 
-Championship title-race board, the model-vs-baseline scoreboard, a
-calibration diagram, the latest logged prediction, and the market benchmark.
+Four pages: an interactive head-to-head match predictor, the trophy race,
+the model-vs-baseline scoreboard, and the bookmaker benchmark.
 
 Run locally:  streamlit run app.py
 """
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 from src.features import build_training_data
-from src.elo import predict_match
+from src.elo import compute_ratings, predict_match
 from src.evaluate import rps, brier, log_loss, accuracy
 
 CUTOFF = "2022-01-01"
@@ -127,15 +127,31 @@ div[data-testid="stDataFrame"]:hover, div[data-testid="stImage"]:hover {
 """
 
 
+# ---------------------------------------------------------------- data
+@st.cache_data
+def load_matches():
+    return pd.read_csv("data/results.csv", parse_dates=["date"])
+
+
+@st.cache_data
+def load_ratings():
+    """Current Elo rating for every national team."""
+    return compute_ratings(load_matches().sort_values("date"))
+
+
+@st.cache_resource
+def load_model_bundle():
+    return joblib.load("src/model.joblib")
+
+
 @st.cache_data
 def load_evaluation():
     """Rebuild leak-free rows, score model vs baseline on the held-out slice."""
-    matches = pd.read_csv("data/results.csv", parse_dates=["date"])
-    data = build_training_data(matches)
+    data = build_training_data(load_matches())
     test = data[data["date"] >= CUTOFF].reset_index(drop=True)
     outcomes = test["outcome"].map(OUTCOME_TO_INT).to_numpy()
 
-    bundle = joblib.load("src/model.joblib")
+    bundle = load_model_bundle()
     model = bundle["model"]
     features = bundle["features"]
     raw = model.predict_proba(test[features])
@@ -156,6 +172,60 @@ def load_evaluation():
             "Model": round(fn(model_probs, outcomes), 4),
         })
     return len(test), pd.DataFrame(rows), base_probs, model_probs, outcomes
+
+
+def model_predict(elo_diff: float, neutral: bool):
+    """Three probabilities [team A win, draw, team B win] from the model."""
+    bundle = load_model_bundle()
+    model = bundle["model"]
+    features = bundle["features"]
+    row = pd.DataFrame([{"elo_diff": elo_diff, "neutral": int(neutral)}])
+    raw = model.predict_proba(row[features])[0]
+    col = {label: i for i, label in enumerate(model.classes_)}
+    return [raw[col["home_win"]], raw[col["draw"]], raw[col["home_loss"]]]
+
+
+@st.cache_data
+def load_latest_predictions():
+    files = sorted(f for f in PRED_DIR.glob("2026-*.json")
+                   if "logreg" not in f.stem)
+    if not files:
+        return None
+    with open(files[-1], encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+@st.cache_data
+def load_market():
+    if not MARKET_FILE.exists():
+        return None
+    with open(MARKET_FILE, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+@st.cache_data
+def load_simulation():
+    if not SIM_FILE.exists():
+        return None
+    with open(SIM_FILE, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+# ---------------------------------------------------------------- widgets
+def bar_board(rows, animate=True):
+    """rows: list of (label, fraction, is_lead). Renders themed bars."""
+    parts = []
+    for label, frac, lead in rows:
+        cls = "lead" if lead else "rest"
+        parts.append(
+            '<div class="tr-row">'
+            f'<div class="tr-name">{label}</div>'
+            f'<div class="tr-track"><div class="tr-fill {cls}" '
+            f'style="width:{frac * 100:.1f}%"></div></div>'
+            f'<div class="tr-pct">{frac * 100:.1f}%</div>'
+            '</div>'
+        )
+    return '<div class="tr-board">' + "".join(parts) + "</div>"
 
 
 def reliability_figure(base_probs, model_probs, outcomes):
@@ -188,123 +258,91 @@ def reliability_figure(base_probs, model_probs, outcomes):
     return fig
 
 
-@st.cache_data
-def load_latest_predictions():
-    files = sorted(f for f in PRED_DIR.glob("2026-*.json")
-                   if "logreg" not in f.stem)
-    if not files:
-        return None
-    with open(files[-1], encoding="utf-8") as fh:
-        return json.load(fh)
-
-
-@st.cache_data
-def load_market():
-    if not MARKET_FILE.exists():
-        return None
-    with open(MARKET_FILE, encoding="utf-8") as fh:
-        return json.load(fh)
-
-
-@st.cache_data
-def load_simulation():
-    if not SIM_FILE.exists():
-        return None
-    with open(SIM_FILE, encoding="utf-8") as fh:
-        return json.load(fh)
-
-
-def title_race_html(mc):
-    order = sorted(mc, key=mc.get, reverse=True)
-    top = order[0]
-    rows = []
-    for team in order:
-        pct = mc[team] * 100
-        cls = "lead" if team == top else "rest"
-        rows.append(
-            '<div class="tr-row">'
-            f'<div class="tr-name">{team}</div>'
-            f'<div class="tr-track"><div class="tr-fill {cls}" '
-            f'style="width:{pct:.1f}%"></div></div>'
-            f'<div class="tr-pct">{pct:.1f}%</div>'
-            '</div>'
-        )
-    return '<div class="tr-board">' + "".join(rows) + "</div>"
-
-
-# ---------------------------------------------------------------- layout
-st.markdown(CSS, unsafe_allow_html=True)
-
-st.markdown(
-    """
-    <div class="hero">
-      <div class="eyebrow">World Cup 2026 · every prediction logged before kickoff</div>
-      <h1 class="big">Who lifts the trophy?</h1>
-      <p class="lede">I trained a model on every international football match since
-      1872 to forecast the 2026 World Cup, and I commit each prediction to GitHub
-      before the game is played. I'm not trying to beat the bookmakers. What I care
-      about is whether the probabilities are honest: when the model says 60%, does
-      that happen about 60% of the time?</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-sim = load_simulation()
-if sim:
-    st.markdown(title_race_html(sim["champion_probabilities_monte_carlo"]),
-                unsafe_allow_html=True)
-    state = sim["state"]
-    a, b = state["remaining_semifinal"]
-    st.caption(
-        f"Based on {sim['n_simulations']:,} simulations of the games still to "
-        f"play. {state['finalist']} are already through to the final; {a} play "
-        f"{b} today for the other place."
+# ---------------------------------------------------------------- pages
+def page_match_predictor():
+    st.markdown(
+        """
+        <div class="hero">
+          <div class="eyebrow">Pick any two national teams</div>
+          <h1 class="big">Match predictor</h1>
+          <p class="lede">The same model that publishes the daily forecasts,
+          pointed at any fixture you like. It knows two things about each
+          match: the gap in Elo ratings and whether the venue is neutral.
+          The simple Elo baseline is shown alongside so you can see where
+          the trained model disagrees with it.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
-    an = sim.get("champion_probabilities_analytic")
-    if an:
+
+    ratings = load_ratings()
+    teams = sorted(ratings)
+
+    c1, c2, c3 = st.columns([5, 1, 5])
+    with c1:
+        team_a = st.selectbox("Team A", teams,
+                              index=teams.index("England") if "England" in teams else 0)
+    with c2:
+        st.markdown(
+            "<div style='text-align:center; font-family:Oswald; font-size:1.6rem;"
+            " padding-top:1.7rem;'>VS</div>", unsafe_allow_html=True)
+    with c3:
+        team_b = st.selectbox("Team B", teams,
+                              index=teams.index("Brazil") if "Brazil" in teams else 1)
+
+    neutral = st.toggle("Neutral venue", value=True,
+                        help="Off means Team A is at home. This is one of the "
+                             "model's two features, so it genuinely moves the "
+                             "numbers. The Elo baseline has no venue term.")
+
+    if team_a == team_b:
+        st.warning("Pick two different teams.")
+        return
+
+    if st.button("⚽ Run prediction", use_container_width=True, type="primary"):
+        ra, rb = ratings[team_a], ratings[team_b]
+        diff = ra - rb
+        m = model_predict(diff, neutral)
+        b = predict_match(ra, rb)
+        base = [b["win"], b["draw"], b["loss"]]
+
         st.caption(
-            "With only three teams left I can also work the odds out exactly on "
-            "paper. The simulation lands within a few tenths of a percent of that "
-            "answer, which is how I know it is wired up correctly."
+            f"Current Elo ratings: {team_a} {ra:.0f}, {team_b} {rb:.0f} "
+            f"(difference {diff:+.0f}"
+            + ("" if neutral else f", {team_a} at home") + ")."
         )
-else:
-    st.info("Simulation results not found yet.")
 
-st.divider()
+        left, right = st.columns(2)
+        with left:
+            st.subheader("Model")
+            st.markdown(bar_board([
+                (f"{team_a}", m[0], m[0] == max(m)),
+                ("Draw", m[1], m[1] == max(m)),
+                (f"{team_b}", m[2], m[2] == max(m)),
+            ]), unsafe_allow_html=True)
+        with right:
+            st.subheader("Elo baseline")
+            st.markdown(bar_board([
+                (f"{team_a}", base[0], base[0] == max(base)),
+                ("Draw", base[1], base[1] == max(base)),
+                (f"{team_b}", base[2], base[2] == max(base)),
+            ]), unsafe_allow_html=True)
 
-n_test, metrics_df, base_probs, model_probs, outcomes = load_evaluation()
+        st.caption(
+            "Ratings come from replaying every international since 1872, so "
+            "long-retired sides still have a number. Treat historical or "
+            "rarely-active teams with a pinch of salt."
+        )
 
-st.header("How good are the forecasts?")
-st.caption(
-    f"Both models were scored on {n_test} internationals played after January "
-    "2022, none of which they were trained on. Lower is better for RPS, Brier "
-    "and log loss; higher is better for accuracy."
-)
-st.dataframe(metrics_df, hide_index=True, use_container_width=True)
-st.caption("The logistic-regression model edges out the simple Elo baseline on "
-           "every measure.")
-
-st.divider()
-
-left, right = st.columns(2)
-
-with left:
-    st.header("Are they honest?")
-    st.caption(
-        "Each dot groups together predictions of a similar confidence and asks "
-        "how often those calls actually came true. The closer the dots track the "
-        "dashed line, the better calibrated the model is."
-    )
-    st.pyplot(reliability_figure(base_probs, model_probs, outcomes))
-
-with right:
-    st.header("Latest prediction")
     preds = load_latest_predictions()
     if preds:
+        st.divider()
+        st.subheader("The bot's latest pre-kickoff call")
         st.caption(
-            f"Match day {preds['match_date']}, produced by the "
-            f"{preds['model']} model at {preds['generated_at_utc'][11:16]} UTC."
+            f"Match day {preds['match_date']}, committed by the scheduled "
+            f"workflow at {preds['generated_at_utc'][11:16]} UTC, before "
+            "kickoff, using the "
+            f"{preds['model']} model."
         )
         rows = [{
             "Match": f"{p['home_team']} vs {p['away_team']}",
@@ -314,18 +352,86 @@ with right:
         } for p in preds["predictions"]]
         st.dataframe(pd.DataFrame(rows), hide_index=True,
                      use_container_width=True)
-    else:
-        st.info("No prediction files found yet.")
 
-st.divider()
 
-st.header("Against the market")
-market = load_market()
-if market:
+def page_trophy_race():
+    st.markdown(
+        """
+        <div class="hero">
+          <div class="eyebrow">World Cup 2026 · every prediction logged before kickoff</div>
+          <h1 class="big">Who lifts the trophy?</h1>
+          <p class="lede">I trained a model on every international football match since
+          1872 to forecast the 2026 World Cup, and I commit each prediction to GitHub
+          before the game is played. I'm not trying to beat the bookmakers. What I care
+          about is whether the probabilities are honest: when the model says 60%, does
+          that happen about 60% of the time?</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    sim = load_simulation()
+    if not sim:
+        st.info("Simulation results not found yet.")
+        return
+
+    mc = sim["champion_probabilities_monte_carlo"]
+    order = sorted(mc, key=mc.get, reverse=True)
+    top = order[0]
+    st.markdown(bar_board([(t, mc[t], t == top) for t in order]),
+                unsafe_allow_html=True)
+
+    state = sim["state"]
+    a, b = state["remaining_semifinal"]
     st.caption(
-        "The bookmakers' line is about the sharpest public forecast there is, so "
-        "I use it as a yardstick rather than a target. These are their odds with "
-        "the built-in margin stripped out, next to my model and the baseline."
+        f"Based on {sim['n_simulations']:,} simulations of the games still to "
+        f"play. {state['finalist']} are already through to the final; {a} play "
+        f"{b} for the other place."
+    )
+    if sim.get("champion_probabilities_analytic"):
+        st.caption(
+            "With only three teams left I can also work the odds out exactly on "
+            "paper. The simulation lands within a few tenths of a percent of that "
+            "answer, which is how I know it is wired up correctly."
+        )
+
+
+def page_scoreboard():
+    n_test, metrics_df, base_probs, model_probs, outcomes = load_evaluation()
+
+    st.header("How good are the forecasts?")
+    st.caption(
+        f"Both models were scored on {n_test} internationals played after "
+        "January 2022, none of which they were trained on. Lower is better for "
+        "RPS, Brier and log loss; higher is better for accuracy."
+    )
+    st.dataframe(metrics_df, hide_index=True, use_container_width=True)
+    st.caption("The logistic-regression model edges out the simple Elo "
+               "baseline on every measure.")
+
+    st.divider()
+    st.header("Are they honest?")
+    st.caption(
+        "Each dot groups together predictions of a similar confidence and asks "
+        "how often those calls actually came true. The closer the dots track "
+        "the dashed line, the better calibrated the model is."
+    )
+    left, _ = st.columns([1, 1])
+    with left:
+        st.pyplot(reliability_figure(base_probs, model_probs, outcomes))
+
+
+def page_market():
+    st.header("Against the market")
+    market = load_market()
+    if not market:
+        st.info("No market benchmark file found yet.")
+        return
+    st.caption(
+        "The bookmakers' line is about the sharpest public forecast there is, "
+        "so I use it as a yardstick rather than a target. These are their odds "
+        "with the built-in margin stripped out, next to my model and the "
+        "baseline."
     )
     labels = ["Home", "Draw", "Away"]
     for fx in market["fixtures"]:
@@ -337,9 +443,76 @@ if market:
             "Baseline": [f"{v:.1%}" for v in fx["baseline"]],
         })
         st.dataframe(table, hide_index=True, use_container_width=True)
-else:
-    st.info("No market benchmark file found yet.")
 
-st.divider()
-st.caption("Source and full commit history: "
-           "github.com/abdullahiali1545-arch/world-cup-2026-predictor")
+
+def page_teams():
+    st.header("Every team in the tournament")
+    st.caption(
+        "All 48 sides that played at World Cup 2026, ranked by their current "
+        "Elo rating, with their record in this tournament. Ratings include "
+        "every international each team has ever played, so a side can rank "
+        "above teams that went further in the bracket."
+    )
+
+    matches = load_matches()
+    ratings = load_ratings()
+    wc = matches[(matches["date"] >= "2026-06-01")
+                 & (matches["tournament"] == "FIFA World Cup")]
+    teams = sorted(set(wc["home_team"]) | set(wc["away_team"]))
+
+    alive = set()
+    sim = load_simulation()
+    if sim:
+        alive = {sim["state"]["finalist"], *sim["state"]["remaining_semifinal"]}
+
+    rows = []
+    for t in teams:
+        home = wc[wc["home_team"] == t]
+        away = wc[wc["away_team"] == t]
+        w = int((home["home_score"] > home["away_score"]).sum()
+                + (away["away_score"] > away["home_score"]).sum())
+        d = int((home["home_score"] == home["away_score"]).sum()
+                + (away["away_score"] == away["home_score"]).sum())
+        played = len(home) + len(away)
+        rows.append({
+            "Team": ("🏆 " if t in alive else "") + t,
+            "Elo rating": round(ratings.get(t, 0)),
+            "Played": played,
+            "Won": w,
+            "Drawn": d,
+            "Lost": played - w - d,
+        })
+
+    table = pd.DataFrame(rows).sort_values("Elo rating", ascending=False)
+    table.insert(0, "Rank", range(1, len(table) + 1))
+    st.dataframe(table, hide_index=True, use_container_width=True,
+                 height=min(38 * len(table) + 40, 1200))
+    st.caption("🏆 = still in the tournament. Draws include knockout games "
+               "decided in extra time or on penalties, since the dataset "
+               "records the 90-minute score.")
+
+
+# ---------------------------------------------------------------- shell
+st.markdown(CSS, unsafe_allow_html=True)
+
+with st.sidebar:
+    st.markdown("### ⚽ World Cup 2026")
+    page = st.radio("Pages", ["Match predictor", "Trophy race", "Teams",
+                              "Scoreboard", "vs the market"],
+                    label_visibility="collapsed")
+    st.divider()
+    st.caption("Every prediction is committed to GitHub before kickoff by a "
+               "scheduled bot, so the timestamps can't be faked.")
+    st.caption("[Source & commit history](https://github.com/"
+               "abdullahiali1545-arch/world-cup-2026-predictor)")
+
+if page == "Match predictor":
+    page_match_predictor()
+elif page == "Trophy race":
+    page_trophy_race()
+elif page == "Teams":
+    page_teams()
+elif page == "Scoreboard":
+    page_scoreboard()
+else:
+    page_market()
