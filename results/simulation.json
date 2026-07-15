@@ -1,0 +1,23 @@
+{
+  "generated_at_utc": "2026-07-15T10:09:00.326735+00:00",
+  "n_simulations": 50000,
+  "seed": 42,
+  "state": {
+    "finalist": "Spain",
+    "remaining_semifinal": [
+      "England",
+      "Argentina"
+    ]
+  },
+  "champion_probabilities_monte_carlo": {
+    "Spain": 0.5261,
+    "Argentina": 0.3508,
+    "England": 0.123
+  },
+  "champion_probabilities_analytic": {
+    "Spain": 0.5235,
+    "Argentina": 0.3533,
+    "England": 0.1232
+  },
+  "model": "logreg-v1"
+}
